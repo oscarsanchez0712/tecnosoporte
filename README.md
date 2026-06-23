@@ -1,4 +1,4 @@
-# 🎧 TecnoSoporte SAC — v2
+# 🎧 TecnoSoporte
 
 Sistema web de gestión de tickets de soporte técnico con diseño **dark mode** en tonos rojo y naranja, desplegado en AWS con arquitectura de dos servidores EC2.
 
