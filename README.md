@@ -4,7 +4,7 @@ Sistema web de gestión de tickets de soporte técnico con diseño **dark mode**
 
 ---
 
-## ✨ Diseño v2
+## ✨ Diseño
 
 - Fondo oscuro `#0f0f0f` con destellos de luz rojo/naranja
 - Navbar con efecto **glassmorphism**
