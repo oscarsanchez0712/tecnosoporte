@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Editar Ticket #{{ ticket.id }} — TecnoSoporte SAC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+
+    <div class="d-flex align-items-center mb-4 gap-3">
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h5 class="mb-0 fw-bold">Actualizar estado</h5>
+        <p class="mb-0" style="font-size:12px;color:#666">Ticket #{{ ticket.id }} · {{ ticket.cliente }}</p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header"><i class="bi bi-info-circle me-2" style="color:#ff6a2f"></i>Información del ticket</div>
+      <div class="card-body p-4">
+        <dl class="row mb-0" style="font-size:13px">
+          <dt class="col-sm-4" style="color:#777">Cliente</dt>
+          <dd class="col-sm-8" style="color:#eee">{{ ticket.cliente }}</dd>
+          <dt class="col-sm-4" style="color:#777">Teléfono</dt>
+          <dd class="col-sm-8" style="color:#eee">{{ ticket.telefono }}</dd>
+          <dt class="col-sm-4" style="color:#777">Problema</dt>
+          <dd class="col-sm-8" style="color:#eee">{{ ticket.problema }}</dd>
+          <dt class="col-sm-4" style="color:#777">Fecha</dt>
+          <dd class="col-sm-8 mb-0" style="color:#eee">{{ ticket.fecha_registro.strftime('%d/%m/%Y %H:%M') if ticket.fecha_registro else '-' }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><i class="bi bi-arrow-repeat me-2" style="color:#ff6a2f"></i>Cambiar estado</div>
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('editar_ticket', ticket_id=ticket.id) }}">
+          <div class="d-flex gap-3 flex-wrap mb-4">
+            {% for estado in ['Pendiente', 'En Proceso', 'Resuelto'] %}
+            <div>
+              <input type="radio" class="estado-radio" name="estado"
+                     id="e{{ loop.index }}" value="{{ estado }}"
+                     {{ 'checked' if ticket.estado == estado }}>
+              <label class="estado-label" for="e{{ loop.index }}">
+                {% if estado == 'Pendiente' %}⏳{% elif estado == 'En Proceso' %}🔧{% else %}✅{% endif %}
+                {{ estado }}
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="bi bi-check-lg me-1"></i>Guardar
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

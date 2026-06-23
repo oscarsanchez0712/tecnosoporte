@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}TecnoSoporte SAC{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* ── Gradiente fondo ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,80,30,0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,140,0,0.10) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: rgba(20,20,20,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 28px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff !important;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #ff501e, #ff8c00);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .brand-name span { color: #ff6a2f; }
+
+    /* ── Botón principal ── */
+    .btn-primary {
+      background: linear-gradient(135deg, #ff501e, #ff8c00) !important;
+      border: none !important;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 8px 20px;
+      font-size: 13px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-outline-secondary {
+      border-color: rgba(255,255,255,0.15) !important;
+      color: #aaa !important;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+    .btn-outline-secondary:hover { background: rgba(255,255,255,0.06) !important; color: #fff !important; }
+
+    /* ── Cards ── */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .card-header {
+      background: transparent !important;
+      border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+      font-weight: 600;
+      font-size: 14px;
+      color: #ddd;
+      border-radius: 16px 16px 0 0 !important;
+      padding: 16px 20px;
+    }
+
+    /* ── Stat cards ── */
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); }
+    .stat-icon { font-size: 2rem; margin-bottom: 6px; }
+    .stat-num { font-size: 2rem; font-weight: 700; }
+    .stat-label { font-size: 12px; color: #888; }
+
+    /* ── Tabla ── */
+    .table { color: #ddd; }
+    .table thead th {
+      background: rgba(255,80,30,0.12);
+      color: #ff8c4a;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+      padding: 14px 16px;
+    }
+    .table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.15s;
+    }
+    .table tbody tr:hover { background: rgba(255,255,255,0.04); }
+    .table tbody td { padding: 14px 16px; vertical-align: middle; font-size: 13px; border: none; }
+
+    /* ── Badges estado ── */
+    .badge-pendiente  { background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 500; }
+    .badge-enproceso  { background: rgba(255,80,30,0.15); color: #ff8c4a; border: 1px solid rgba(255,80,30,0.3); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 500; }
+    .badge-resuelto   { background: rgba(40,200,120,0.15); color: #28c878; border: 1px solid rgba(40,200,120,0.3); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 500; }
+
+    /* ── Forms ── */
+    .form-control, .form-select {
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      color: #f0f0f0 !important;
+      border-radius: 10px;
+      font-size: 13px;
+      padding: 10px 14px;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: #ff6a2f !important;
+      box-shadow: 0 0 0 3px rgba(255,106,47,0.15) !important;
+    }
+    .form-control::placeholder { color: #555 !important; }
+    .form-label { font-size: 13px; font-weight: 500; color: #bbb; margin-bottom: 6px; }
+
+    /* ── Alerts ── */
+    .alert { border-radius: 12px; font-size: 13px; border: none; }
+    .alert-success { background: rgba(40,200,120,0.12); color: #28c878; }
+    .alert-warning { background: rgba(255,193,7,0.12); color: #ffc107; }
+    .alert-danger  { background: rgba(220,53,69,0.12);  color: #f87; }
+
+    /* ── Botones acción tabla ── */
+    .btn-action {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-edit  { background: rgba(255,80,30,0.15); color: #ff8c4a; }
+    .btn-edit:hover  { background: rgba(255,80,30,0.3); }
+    .btn-delete { background: rgba(220,53,69,0.12); color: #f87; }
+    .btn-delete:hover { background: rgba(220,53,69,0.25); }
+
+    /* ── Radio buttons ── */
+    .estado-radio { display: none; }
+    .estado-label {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      font-size: 13px;
+      color: #aaa;
+      transition: all 0.15s;
+    }
+    .estado-radio:checked + .estado-label {
+      border-color: #ff6a2f;
+      color: #ff8c4a;
+      background: rgba(255,80,30,0.12);
+      font-weight: 600;
+    }
+
+    .container-main { position: relative; z-index: 1; padding: 28px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="{{ url_for('index') }}">
+    <div class="brand-icon">🎧</div>
+    <div>Tecno<span>Soporte</span> <span style="color:#888;font-weight:400;font-size:.85rem">SAC</span></div>
+  </a>
+  <div class="ms-auto">
+    <a href="{{ url_for('nuevo_ticket') }}" class="btn btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>Nuevo Ticket
+    </a>
+  </div>
+</nav>
+
+<div class="container-fluid container-main">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show mb-3" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Ticket — TecnoSoporte SAC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+
+    <div class="d-flex align-items-center mb-4 gap-3">
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h5 class="mb-0 fw-bold">Registrar nuevo ticket</h5>
+        <p class="mb-0" style="font-size:12px;color:#666">Completa los datos de la solicitud</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <i class="bi bi-ticket-perforated me-2" style="color:#ff6a2f"></i>Datos del ticket
+      </div>
+      <div class="card-body p-4">
+        <form method="POST" action="{{ url_for('nuevo_ticket') }}">
+
+          <div class="mb-3">
+            <label class="form-label">👤 Nombre del Cliente</label>
+            <input type="text" class="form-control" name="cliente"
+                   placeholder="Ej: Juan Pérez García" required maxlength="100" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">📞 Teléfono de Contacto</label>
+            <input type="text" class="form-control" name="telefono"
+                   placeholder="Ej: 999 888 777" required maxlength="20" />
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">⚠️ Descripción del Incidente</label>
+            <textarea class="form-control" name="problema" rows="4"
+                      placeholder="Describe el problema técnico con detalle..."
+                      required maxlength="500"></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="bi bi-save me-1"></i>Registrar Ticket
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
